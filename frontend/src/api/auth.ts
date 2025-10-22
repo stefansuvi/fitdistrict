@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = const API_URL = "https://fitdistrict-backend.onrender.com/api/auth";
+
 
 interface LoginData {
   email: string;
