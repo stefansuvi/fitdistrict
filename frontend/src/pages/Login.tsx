@@ -14,7 +14,7 @@ export function Login() {
     setError(''); // resetuj grešku pre svakog pokušaja
 
     try {
-      const res = await axios.post('http://localhost:5000/api/admins/login', {
+      const res = await axios.post('https://fitdistrict-backend.onrender.com/api/admins/login', {
         username,
         password
       });
