@@ -9,10 +9,20 @@ import adminRoutes from './routes/admins';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/admins', adminRoutes);
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // za lokalni frontend
+      "https://fitdistrict.vercel.app", // 🔹 tvoj pravi frontend link na Vercelu
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 // MongoDB Atlas konekcija
 mongoose.connect(process.env.MONGO_URI!)
