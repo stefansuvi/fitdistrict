@@ -1,4 +1,5 @@
-const ADMIN_URL = "https://fitdistrict.onrender.com/api/admins/login";
+const ADMIN_URL = "https://fitdistrict-backend.onrender.com/api/admins/login";
+
 
 export interface AdminLoginResponse {
   message: string;
