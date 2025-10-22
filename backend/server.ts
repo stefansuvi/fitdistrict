@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // za lokalni frontend
-      "fitdistrict-a54jr80af-stefansuvis-projects.vercel.app", // 🔹 tvoj pravi frontend link na Vercelu
+      "https://fitdistrict.vercel.app", // 🔹 tvoj pravi frontend link na Vercelu
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
