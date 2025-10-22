@@ -32,5 +32,9 @@ mongoose.connect(process.env.MONGO_URI!)
 // API rute
 app.use('/api/clients', clientRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server radi na portu ${PORT}`));
