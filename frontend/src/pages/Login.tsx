@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { DumbbellIcon } from 'lucide-react';
 
 export function Login() {
   const [username, setUsername] = useState('');
@@ -21,6 +20,8 @@ export function Login() {
 
       if (res.data.success) {
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('token', res.data.token);
+
         navigate('/dashboard');
       } else {
         setError(res.data.message); // prikaži grešku u UI

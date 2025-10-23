@@ -1,20 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-interface JwtPayload {
-  id: string;
-}
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'Nema tokena' });
-
-  try {
-    const secret = process.env.JWT_SECRET || 'secret';
-    const decoded = jwt.verify(token, secret) as JwtPayload;
-    (req as any).adminId = decoded.id;
-    next();
-  } catch (err) {
-    res.status(401).json({ message: 'Token nije validan' });
+  if (!token) {
+    return res.status(401).json({ success: false, message: "Access denied" });
   }
+
+  jwt.verify(token, process.env.JWT_SECRET!, (err: any, user: any) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: "Invalid token" });
+    }
+
+    (req as any).user = user;
+    next();
+  });
 };

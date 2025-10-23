@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import clientRoutes from './routes/clientRoutes';
 import authRoutes from './routes/auth';
 import adminRoutes from './routes/admins';
+import { verifyToken } from './middleware/authMiddleware';
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ mongoose.connect(process.env.MONGO_URI!)
 // ✅ API rute
 app.use('/api/admins', adminRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/clients', clientRoutes);
+app.use('/api/clients', verifyToken, clientRoutes);
 
 // ✅ Test ruta za backend
 app.get('/', (req, res) => {

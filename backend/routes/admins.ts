@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
-import { Admin } from '../models/Admin';
+import { Admin } from '../models/Admin'; 
+import jwt from 'jsonwebtoken';
 
 const router = Router();
 
@@ -25,7 +26,15 @@ router.post('/login', async (req, res) => {
     }
 
     // Ako je sve ok
-    return res.json({ success: true, username: admin.username });
+    return res.json({
+  success: true,
+  username: admin.username,
+  token: jwt.sign(
+    { id: admin._id, username: admin.username },
+    process.env.JWT_SECRET!,
+    { expiresIn: "7d" }
+  )
+});
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: 'Greška servera' });
