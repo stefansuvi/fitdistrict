@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = "https://fitdistrict-backend.onrender.com/api/clients";
+const API_URL = "https://fitdistrict.onrender.com/api/clients";
 
 
 export const getClients = async () => {
