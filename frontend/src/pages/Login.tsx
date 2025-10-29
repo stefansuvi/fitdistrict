@@ -5,12 +5,12 @@ import axios from 'axios';
 export function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // <-- state za grešku
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(''); // resetuj grešku pre svakog pokušaja
+    setError('');
 
     try {
       const res = await axios.post('https://fitdistrict.onrender.com/api/admins/login', {
@@ -21,14 +21,30 @@ export function Login() {
       if (res.data.success) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('token', res.data.token);
-
+        console.log('✅ Login uspešan:', res.data);
         navigate('/dashboard');
       } else {
-        setError(res.data.message); // prikaži grešku u UI
+        console.warn('⚠️ Login neuspešan:', res.data.message);
+        setError(res.data.message);
       }
-    } catch (err) {
-      console.error(err);
-      setError('Greška pri login-u');
+    } catch (err: any) {
+      // Detaljan log greške
+      console.error('❌ Greška pri loginu:', err);
+
+      if (err.response) {
+        console.error('📩 Odgovor servera:', err.response.data);
+        console.error('📡 Status kod:', err.response.status);
+        console.error('🔗 Endpoint:', err.config?.url);
+
+        // Prikaz poruke u UI direktno sa backend-a
+        setError(err.response.data?.message || 'Greška pri login-u');
+      } else if (err.request) {
+        console.error('🚫 Nema odgovora od servera. Poslat zahtev:', err.request);
+        setError('Nema odgovora od servera');
+      } else {
+        console.error('⚙️ Problem u frontend kodu:', err.message);
+        setError('Greška pri login-u');
+      }
     }
   };
 
@@ -36,11 +52,7 @@ export function Login() {
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
       <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md border border-gray-700">
         <div className="flex flex-col items-center mb-8">
-          <img
-            src="/logo.png"
-            alt="Fit District Logo"
-            className="w-120 h-120 mb-4 object-contain"
-          />
+          <img src="/logo.png" alt="Fit District Logo" className="w-120 h-120 mb-4 object-contain" />
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
@@ -74,12 +86,7 @@ export function Login() {
             />
           </div>
 
-          {/* PRIKAZ GREŠKE */}
-          {error && (
-            <p className="text-red-500 text-sm mt-1">
-              {error}
-            </p>
-          )}
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
           <button
             type="submit"
@@ -92,3 +99,4 @@ export function Login() {
     </div>
   );
 }
+
