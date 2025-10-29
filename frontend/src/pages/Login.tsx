@@ -45,7 +45,27 @@ export function Login() {
         console.error('⚙️ Problem u frontend kodu:', err.message);
         setError('Greška pri login-u');
       }
+<<<<<<< HEAD
     }
+=======
+    } catch (err: any) {
+  console.error("❌ Greška pri loginu:", err);
+
+  // Ako koristis Axios, ovo će izvući poruku sa backenda
+  if (err.response) {
+    console.error("📩 Odgovor servera:", err.response.data);
+    console.error("📡 Status kod:", err.response.status);
+    console.error("🔗 Endpoint:", err.config?.url);
+  } else if (err.request) {
+    console.error("🚫 Nema odgovora od servera. Poslat zahtev:", err.request);
+  } else {
+    console.error("⚙️ Problem u frontend kodu:", err.message);
+  }
+
+  setError('Greška pri login-u');
+}
+
+>>>>>>> 73c1cec (Auth hardening and cleanup:)
   };
 
   return (

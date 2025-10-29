@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const API_URL = const API_URL = "https://fitdistrict.onrender.com/api/auth";
+// Standardized auth client to the admins login endpoint
+const API_URL = "https://fitdistrict.onrender.com/api/admins";
 
-
-interface LoginData {
-  email: string;
+export interface LoginData {
+  username: string;
   password: string;
 }
 
 export const login = async (data: LoginData) => {
   const response = await axios.post(`${API_URL}/login`, data);
-  return response.data; // vraća token i korisničke informacije
+  return response.data; // { success, token, username }
 };

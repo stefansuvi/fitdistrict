@@ -15,23 +15,31 @@ export function AddClientModal({ isOpen, onClose, onAdd }: AddClientModalProps) 
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [membershipExpiry, setMembershipExpiry] = useState<Date | null>(null);
-  const [trainer, setTrainer] = useState('Marko'); // default trener
+  const [trainer, setTrainer] = useState('Marko');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!membershipExpiry) return;
+
+    // ✅ Fix timezone — postavi podne kako UTC ne bi promenio datum
+    const fixedDate = new Date(membershipExpiry);
+    fixedDate.setHours(12, 0, 0, 0);
+
     onAdd({
       firstName,
       lastName,
       phoneNumber,
-      membershipExpiry: membershipExpiry.toISOString().split('T')[0],
+      membershipExpiry: fixedDate, // ✅ šaljemo pravi Date
       trainer,
     });
+
+    // Reset form
     setFirstName('');
     setLastName('');
     setPhoneNumber('');
     setMembershipExpiry(null);
     setTrainer('Marko');
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -78,7 +86,7 @@ export function AddClientModal({ isOpen, onClose, onAdd }: AddClientModalProps) 
               value={phoneNumber}
               onChange={e => setPhoneNumber(e.target.value)}
               className="w-full px-4 py-2 border border-gray-600 bg-gray-900 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-white"
-              placeholder="+381"
+              placeholder="+3816..."
               required
             />
           </div>
@@ -105,7 +113,6 @@ export function AddClientModal({ isOpen, onClose, onAdd }: AddClientModalProps) 
               dateFormat="dd.MM.yyyy"
               className="w-full px-4 py-2 border border-gray-600 bg-gray-900 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-white cursor-pointer"
               placeholderText="Izaberi datum"
-              wrapperClassName="w-full"
             />
           </div>
 

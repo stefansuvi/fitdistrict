@@ -5,7 +5,9 @@ import dotenv from 'dotenv';
 import clientRoutes from './routes/clientRoutes';
 import authRoutes from './routes/auth';
 import adminRoutes from './routes/admins';
-import resetAdminsRoutes from './routes/resetAdmins';
+
+import cronRoutes from './routes/cron';
+
 import { verifyToken } from './middleware/authMiddleware';
 
 dotenv.config();
@@ -35,7 +37,8 @@ mongoose.connect(process.env.MONGO_URI!)
 app.use('/api/admins', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/clients', verifyToken, clientRoutes);
-app.use('/api/reset-admins', resetAdminsRoutes);
+app.use('/api/cron', cronRoutes);
+
 
 // ✅ Test ruta za backend
 app.get('/', (req, res) => {
@@ -46,3 +49,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`✅ Server radi na portu ${PORT}`)
 );
+
